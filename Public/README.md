@@ -2,7 +2,7 @@
 ## Nginx & Apache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
 ## Terraform configuration to launch Nginx & Apache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
 
-- VPC with 2 AZs with a public for each AZs
+- VPC with 2 AZs with a Subnet public for each AZs , 1 Intenet Gateway, and DHCP options set.
  
 - 2 Instances in public subnets behind a ALB (balancing with Roubn Robin Algorithm)
 
@@ -27,7 +27,8 @@ The load balancer and EC2 instances are launched in a **custom VPC**, and use cu
 
 ## EC2 Instance Key Pair
 You can use an existing Key Pair Name setting  `key_name = "key-name"` on  `terraform.tfvars` file
-If yo not set existing key pair, was created one, and you must to put your pub ssh key on file `tf-test.pub` file, this key will be enabled on the EC2 instances to permit access via ssh.
+If yo not set existing key pair, was created one, and you must to put your pub ssh key on file `tf-test.pub` 
+file, this key will be enabled on the EC2 instances to permit access via ssh.
  
 ## EC2 Instance AMI
 Automatically its set the Ubuntu-16_04 AMI in the region selected when the stack is deployed
