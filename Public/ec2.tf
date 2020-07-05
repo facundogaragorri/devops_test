@@ -59,9 +59,21 @@ resource "aws_key_pair" "tf-test" {
   public_key = file("tf-test.pub")
 }
 
+#obtain latest Ubuntu-16_04 AMI
+data "aws_ami" "ubuntu-16_04" {
+  most_recent = true
+  owners = ["099720109477"] #canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+  }
+}
+
 # EC2 instances, one per availability zone
 resource "aws_instance" "apache" {
-  ami                         = lookup(var.ec2_amis, var.aws_region)
+  #ami                         = lookup(var.ec2_amis, var.aws_region)
+  ami                         = data.aws_ami.ubuntu-16_04.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public[0].id
@@ -77,7 +89,8 @@ resource "aws_instance" "apache" {
 }
 
 resource "aws_instance" "nginx" {
-  ami                         = lookup(var.ec2_amis, var.aws_region)
+  #ami                         = lookup(var.ec2_amis, var.aws_region)
+  ami                         = data.aws_ami.ubuntu-16_04.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public[1].id

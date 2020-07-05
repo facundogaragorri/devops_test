@@ -19,17 +19,17 @@ variable "azs" {
 }
 
 
-variable "ec2_amis" {
-  description = "Ubuntu Server 16.04 LTS (HVM)"
-  type        = map
+# variable "ec2_amis" {
+#   description = "Ubuntu Server 16.04 LTS (HVM)"
+#   type        = map
 
-  default = {
-    "us-east-1" = "ami-059eeca93cf09eebd"
-    "us-east-2" = "ami-0782e9ee97725263d"
-    "us-west-1" = "ami-0ad16744583f21877"
-    "us-west-2" = "ami-0e32ec5bc225539f5"
-  }
-}
+#   default = {
+#     "us-east-1" = "ami-059eeca93cf09eebd"
+#     "us-east-2" = "ami-0782e9ee97725263d"
+#     "us-west-1" = "ami-0ad16744583f21877"
+#     "us-west-2" = "ami-0e32ec5bc225539f5"
+#   }
+# }
 
 #Ec2 Instanes Type touse
 variable "instance_type" {
