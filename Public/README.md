@@ -32,18 +32,12 @@ If yo not set existing key pair, was created one, and you must to put your pub s
 ## EC2 Instance AMI
 Automatically its set the Ubuntu-16_04 AMI in the region selected when the stack is deployed
 
-## EC2 Instance Public IP
-Intances have default associate_public_ip_address = false
-If you want to enable uncomment #public_ip = "true" on `terraform.tfvars` file.
-For example enable This in case that you need to access via ssh to instances directly to instance from your local environment .
-If you want you can enable a public ip from which to connect to the instances setting the var 
-`whitelist-ips = ["186.139.222.183/32"]` on `terraform.tfvars` file.
-
-
 ## EC2 Instances Security Groups
 By default only traffic on port 80 from ALB was enabled.
 For example, if you want enable ssh , uncomment the SG config on  `ec2.tf`  to enable ingress to port 22.
 Thi is posible from vpc (from bastion or jump server, or if you have an vpn configured)or  directly from your local environment by public ip , or private if you set a vpn to vpc.
+If you want you can enable a public ip from which to connect to the instances setting the var 
+`whitelist-ips = ["public_ip/32"]` on `terraform.tfvars` file.
 
 ## AWS Access credentials
 This Terraform stack using default profile of AWS CLI local config ,
