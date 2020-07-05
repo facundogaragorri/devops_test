@@ -28,11 +28,11 @@ The load balancer and EC2 instances are launched in a **custom VPC**, and use cu
 ## EC2 Instance Key Pair
 You can use an existing Key Pair Name setting  `key_name = "key-name"` on  `terraform.tfvars` file
 If yo not set existing key pair, was created one, and you must to put your pub ssh key on file `tf-test.pub` file, this key will be enabled on the EC2 instances to permit access via ssh.
-
-##EC2 Instance AMI
+ 
+## EC2 Instance AMI
 Automatically its set the Ubuntu-16_04 AMI in the region selected when the stack is deployed
 
-##EC2 Instance Public IP
+## EC2 Instance Public IP
 Intances have default associate_public_ip_address = false
 If you want to enable uncomment #public_ip = "true" on `terraform.tfvars` file.
 For example enable This in case that you need to access via ssh to instances directly to instance from your local environment .
@@ -93,4 +93,4 @@ To Destroy Resources of the stack:
 $ terraform destroy
 ```
 ## OUTPUT URL
-Applying this Terraform configuration returns the load balancer's public URL on the last line of output.  This URL can be used to view the default nginx homepage.
+Applying this Terraform configuration returns the load balancer's public URL on the last line of output.  This URL can be used to view the default  homepage of the web server 

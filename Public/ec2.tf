@@ -22,13 +22,13 @@ resource "aws_security_group" "ec2-sg" {
 
 # #If you want enable SSH on EC2 Instances, to public ip instance from authorized Public IP
 #This in case that dont have an Bastion or Jumper Instance on the same VPC
-  # ingress {
-  #   from_port   = 22
-  #   to_port     = 22
-  #   protocol    = "tcp"
-  #   cidr_blocks = var.whitelist-ips
-  #   description = "SSH"
-  # }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.whitelist-ips
+    description = "SSH"
+  }
 
 # #If you want enable SSH on EC2 Instances,in case that have an Bastion or Jumper Instance on the same VPC 
 #   ingress {
