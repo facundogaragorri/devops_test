@@ -1,13 +1,3 @@
-# Put the following two keys into shell or env variables
-
-#variable "aws_access_key" {
-#  description = "AWS access key, must pass on command line using -var"
-#}
-
-#variable "aws_secret_key" {
-#  description = "AWS secret access key, must pass on command line using -var"
-#}
-
 variable "aws_region" {
   description = "US EAST Virginia"
   default     = "us-east-1"

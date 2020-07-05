@@ -1,19 +1,33 @@
-# terraform-nginx-docker-containers-behind-a-classic-ELB
+# Terraform Stack 
+##Nginx & Apcache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
 
-VPC with 3 AZs with a public/private for each AZs
+VPC with 2 AZs with a public for each AZs
  
-3 containers in public subnets behind a classic ELB
+2 Instances in public subnets behind a ALB 
+1 With Apache Web Server
+1 With Nginx Web Server
+Alb balancgin with Roubn Robin Algorithm
 
-A Terraform configuration to launch a cluster of EC2 instances.  Each EC2 instance runs a single nginx Docker container (based on the latest official nginx Docker image).  One EC2 instance is launched in each availability zone of the current region (see Regions below).  The load balancer and EC2 instances are launched in a **custom VPC**, and use custom security groups.
 
-Applying the configuration takes about 30 seconds (in US West Oregon), and another two or three minutes for the EC2 instances to become healthy and for the load balancer DNS record to propagate.
+A Terraform configuration to launch a cluster of EC2 instances.  
+Each EC2 instance runs a web server 
+One EC2 instance is launched in each availability zone of the current region (see Regions below).
+The load balancer and EC2 instances are launched in a **custom VPC**, and use custom security groups.
+
+
 
 ## Files
-+ `provider.tf` - AWS Provider.
-+ `ec2.tf` - Launches EC2 instances, during initialization each instance installs Docker and the nginx Docker image.
-+ `elb.tf` - Launches elastic load balancer for EC2 instances running nginx.
-+ `vars.tf` - Used by other files, sets default AWS region, calculates availability zones, etc.
++ `provider.tf` - AWS Provider config.
++ `versions.tf` - Config of Terraform Version needed 
 + `vpc.tf` - Launches VPC, subnets, route tables, etc.
++ `ec2.tf` - Launches EC2 instances, during initialization each instance installs Docker and the nginx Docker image.
++ `alb.tf` - Launches elastic load balancer for EC2 instances running nginx.
++ `vars.tf` - Variables file, used by other files, sets default AWS region, calculates availability zones, etc.
++ `terraform.tfvars` - to set local variables values to pass to `vars.tf` file
++ `install_apache.sh` - bash script to install apache web server
++ `install_nginx.sh` - bash script to install nginx web server
+
+
 
 ## Access credentials
 AWS access credentials must be supplied on the command line (see example below).  This Terraform script was tested in my own AWS account with a user that has the `AmazonEC2FullAccess` and `AmazonVPCFullAccess` policies.  It was also tested in the Splice-supplied AWS account with a user that has the `AdministratorAccess` policy.
@@ -24,12 +38,12 @@ To setup provisioner
 $ terraform init
 ```
 
-To launch the EC2 demo cluster:
+To launch the Stack :
 ```
 $ terraform plan -out=aws.tfplan -var "aws_access_key=······" -var "aws_secret_key=······"
 $ terraform apply aws.tfplan
 ```
-To teardown the EC2 demo cluster:
+To Destroy Resources of the stack:
 ```
 $ terraform destroy -var "aws_access_key=······" -var "aws_secret_key=······"
 ```
