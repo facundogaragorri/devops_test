@@ -20,17 +20,17 @@ resource "aws_security_group" "ec2-sg" {
     security_groups = ["${aws_security_group.alb_sg.id}"]
   }  
 
-# Ingress for access to instances via ssh to public ip instance from authorized Public IP
+# #If you want enable SSH on EC2 Instances, to public ip instance from authorized Public IP
 #This in case that dont have an Bastion or Jumper Instance on the same VPC
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.whitelist-ips
-    description = "SSH"
-  }
+  # ingress {
+  #   from_port   = 22
+  #   to_port     = 22
+  #   protocol    = "tcp"
+  #   cidr_blocks = var.whitelist-ips
+  #   description = "SSH"
+  # }
 
-# #This in case that have an Bastion or Jumper Instance on the same VPC
+# #If you want enable SSH on EC2 Instances,in case that have an Bastion or Jumper Instance on the same VPC 
 #   ingress {
 #     from_port   = 22
 #     to_port     = 22
@@ -74,7 +74,7 @@ data "aws_ami" "ubuntu-16_04" {
 resource "aws_instance" "apache" {
   #ami                         = lookup(var.ec2_amis, var.aws_region)
   ami                         = data.aws_ami.ubuntu-16_04.id
-  associate_public_ip_address = true
+  associate_public_ip_address = var.public_ip
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public[0].id
   user_data                   = file("install_apache.sh")
@@ -91,7 +91,7 @@ resource "aws_instance" "apache" {
 resource "aws_instance" "nginx" {
   #ami                         = lookup(var.ec2_amis, var.aws_region)
   ami                         = data.aws_ami.ubuntu-16_04.id
-  associate_public_ip_address = true
+  associate_public_ip_address = var.public_ip
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public[1].id
   user_data                   = file("install_nginx.sh")

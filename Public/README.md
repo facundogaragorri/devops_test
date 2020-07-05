@@ -23,10 +23,60 @@ The load balancer and EC2 instances are launched in a **custom VPC**, and use cu
 + `terraform.tfvars` - to set local variables values to pass to `vars.tf` file , used to set aws_profile, key pair name, name_prefix , etc
 + `install_apache.sh` - bash script to install apache web server on launch
 + `install_nginx.sh` - bash script to install nginx web server on launch
++ `tf-test.pub` - file with the pub key to authorize on the ec2 instances in case that not set existing Key Pair Name
 
-## Access credentials
-This TF using default profile of AWS CLI local config , if you want to change modify value of variable "aws_profile" , as same with de aws_region
-as default use us-east-1
+## EC2 Instance Key Pair
+You can use an existing Key Pair Name setting  `key_name = "key-name"` on  `terraform.tfvars` file
+If yo not set existing key pair, was created one, and you must to put your pub ssh key on file `tf-test.pub` file, this key will be enabled on the EC2 instances to permit access via ssh.
+
+##EC2 Instance AMI
+Automatically its set the Ubuntu-16_04 AMI in the region selected when the stack is deployed
+
+##EC2 Instance Public IP
+Intances have default associate_public_ip_address = false
+If you want to enable uncomment #public_ip = "true" on `terraform.tfvars` file.
+For example enable This in case that you need to access via ssh to instances directly to instance from your local environment .
+If you want you can enable a public ip from which to connect to the instances setting the var 
+`whitelist-ips = ["186.139.222.183/32"]` on `terraform.tfvars` file.
+
+
+## EC2 Instances Security Groups
+By default only traffic on port 80 from ALB was enabled.
+For example, if you want enable ssh , uncomment the SG config on  `ec2.tf`  to enable ingress to port 22.
+Thi is posible from vpc (from bastion or jump server, or if you have an vpn configured)or  directly from your local environment by public ip , or private if you set a vpn to vpc.
+
+## AWS Access credentials
+This Terraform stack using default profile of AWS CLI local config ,
+we can specify an alternate aws profile modifying value of variable "aws_profile" on `terraform.tfvars`  file.
+ Enabling `#aws_profile = ""` and set the profile name to use.
+However, we can specify an alternate US region on the command line by passing in an extra `aws_profile` argument on the command line by passing in an extra `aws_profile` argument.
+
+## AWS Regions
+The default AWS region is US East Virginia (us-east-1).  
+we can specify an alternate aws profile modifying value of variable "aws_profile" on `terraform.tfvars`  file.
+ Enabling `#aws_region = ""` and set the region name to use.
+However, we can specify an alternate US region on the command line by passing in an extra `aws_region` argument.
+For example:
+```
+$ terraform plan -var "aws_region=us-east-2" -var "aws_profile=other_profile" 
+$ terraform apply 
+$ terraform destroy -var "aws_region=us-east-2" -var "aws_profile=other_profile" 
+```
+Note: we can skip the keys args in the command if they are set via `terraform.tfvars` file.
+
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12|
+| aws | ~> 2.43 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.43 |
 
 ## Command Line Examples
 To setup provisioner
@@ -35,23 +85,12 @@ $ terraform init
 ```
 To launch the Stack :
 ```
-$ terraform plan -out=aws.tfplan -var "aws_profile=······" 
-$ terraform apply aws.tfplan
+$ terraform plan  
+$ terraform apply
 ```
 To Destroy Resources of the stack:
 ```
-$ terraform destroy -var "aws_access_key=······" -var "aws_secret_key=······"
+$ terraform destroy
 ```
-Note: we can skip the keys args in the command if they are set via shell/env exported variables.
-
-## Regions
-The default AWS region is US East Virginia (us-east-1).  However, we can specify an alternate US region on the command line by passing in an extra `aws_region` argument.  Legal values are `us-east-1`, `us-east-2`, `us-west-1`, and `us-west-2` (default).  For example:
-```
-$ terraform plan -out=aws.tfplan -var "aws_access_key=······" -var "aws_secret_key=······" -var "aws_region=us-east-2"
-$ terraform apply aws.tfplan
-$ terraform destroy -var "aws_access_key=······" -var "aws_secret_key=······" -var "aws_region=us-east-2"
-```
-Note: we can skip the keys args in the command if they are set via shell/env exported variables.
-
-## URL
+## OUTPUT URL
 Applying this Terraform configuration returns the load balancer's public URL on the last line of output.  This URL can be used to view the default nginx homepage.

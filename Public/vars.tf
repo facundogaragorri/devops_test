@@ -56,3 +56,9 @@ variable "whitelist-ips" {
   type        = list(string)
   default     = []
 }
+
+variable "public_ip" {
+  type        = bool
+  default     = false
+  description = "Enable public Ip on EC2 instances"
+}
