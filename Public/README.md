@@ -1,5 +1,5 @@
 # Terraform Stack 
-##Nginx & Apcache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
+## Nginx & Apcache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
 
 VPC with 2 AZs with a public for each AZs
  
