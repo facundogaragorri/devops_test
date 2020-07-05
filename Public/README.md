@@ -1,9 +1,7 @@
 # Terraform Stack 
-<<<<<<< HEAD
 ## Nginx & Apache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
 =======
 ## Terraform configuration to launch Nginx & Apache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
->>>>>>> 4d5af875676159a59679be664e0519432c059c23
 
 - VPC with 2 AZs with a public for each AZs
  
