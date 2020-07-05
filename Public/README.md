@@ -1,46 +1,44 @@
 # Terraform Stack 
+<<<<<<< HEAD
 ## Nginx & Apache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
+=======
+## Terraform configuration to launch Nginx & Apache Web Servers on Ec2 Instances behind a Applicationc Load Balancer
+>>>>>>> 4d5af875676159a59679be664e0519432c059c23
 
-VPC with 2 AZs with a public for each AZs
+- VPC with 2 AZs with a public for each AZs
  
-2 Instances in public subnets behind a ALB 
-1 With Apache Web Server
-1 With Nginx Web Server
-Alb balancgin with Roubn Robin Algorithm
+- 2 Instances in public subnets behind a ALB (balancing with Roubn Robin Algorithm)
 
+ - 1 With Apache Web Server
 
-A Terraform configuration to launch a cluster of EC2 instances.  
-Each EC2 instance runs a web server 
-One EC2 instance is launched in each availability zone of the current region (see Regions below).
+ - 1 With Nginx Web Server
+  
+Each EC2 instance are launched in diferent availability zone
 The load balancer and EC2 instances are launched in a **custom VPC**, and use custom security groups.
-
-
 
 ## Files
 + `provider.tf` - AWS Provider config.
 + `versions.tf` - Config of Terraform Version needed 
 + `vpc.tf` - Launches VPC, subnets, route tables, etc.
-+ `ec2.tf` - Launches EC2 instances, during initialization each instance installs Docker and the nginx Docker image.
-+ `alb.tf` - Launches elastic load balancer for EC2 instances running nginx.
++ `ec2.tf` - Launches EC2 instances, during initialization each instance installs diferent web server
++ `alb.tf` - Launches elastic load balancer , listener, target group, etc 
 + `vars.tf` - Variables file, used by other files, sets default AWS region, calculates availability zones, etc.
-+ `terraform.tfvars` - to set local variables values to pass to `vars.tf` file
-+ `install_apache.sh` - bash script to install apache web server
-+ `install_nginx.sh` - bash script to install nginx web server
-
-
++ `terraform.tfvars` - to set local variables values to pass to `vars.tf` file , used to set aws_profile, key pair name, name_prefix , etc
++ `install_apache.sh` - bash script to install apache web server on launch
++ `install_nginx.sh` - bash script to install nginx web server on launch
 
 ## Access credentials
-AWS access credentials must be supplied on the command line (see example below).  This Terraform script was tested in my own AWS account with a user that has the `AmazonEC2FullAccess` and `AmazonVPCFullAccess` policies.  It was also tested in the Splice-supplied AWS account with a user that has the `AdministratorAccess` policy.
+This TF using default profile of AWS CLI local config , if you want to change modify value of variable "aws_profile" , as same with de aws_region
+as default use us-east-1
 
 ## Command Line Examples
 To setup provisioner
 ```
 $ terraform init
 ```
-
 To launch the Stack :
 ```
-$ terraform plan -out=aws.tfplan -var "aws_access_key=······" -var "aws_secret_key=······"
+$ terraform plan -out=aws.tfplan -var "aws_profile=······" 
 $ terraform apply aws.tfplan
 ```
 To Destroy Resources of the stack:
