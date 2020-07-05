@@ -24,9 +24,9 @@ resource "aws_security_group" "alb_sg" {
 
 # using ALB - instances in public subnets
 resource "aws_alb" "alb" {
-  name                      = "${var.name_prefix}-alb"
-  security_groups           = ["${aws_security_group.alb_sg.id}"]
-  subnets                   = data.aws_subnet_ids.public.ids
+  name            = "${var.name_prefix}-alb"
+  security_groups = ["${aws_security_group.alb_sg.id}"]
+  subnets         = data.aws_subnet_ids.public.ids
   tags = {
     Name = "${var.name_prefix}-alb"
   }
@@ -62,17 +62,17 @@ resource "aws_alb_listener" "http_listener" {
 
 # target group attach instance1
 resource "aws_lb_target_group_attachment" "tg-atach-instance1" {
-  target_group_arn =  aws_alb_target_group.tg.arn
-  target_id        =  aws_instance.apache.id
-  port             =  80
+  target_group_arn = aws_alb_target_group.tg.arn
+  target_id        = aws_instance.apache.id
+  port             = 80
 }
 
 # target group attach instance2
 
 resource "aws_lb_target_group_attachment" "tg-atach-instance2" {
-  target_group_arn =  aws_alb_target_group.tg.arn
-  target_id        =  aws_instance.nginx.id
-  port             =  80
+  target_group_arn = aws_alb_target_group.tg.arn
+  target_id        = aws_instance.nginx.id
+  port             = 80
 }
 
 

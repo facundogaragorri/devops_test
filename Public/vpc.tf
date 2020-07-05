@@ -27,7 +27,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.vpc.id
   tags = {
     Name = "Public-Subnet-${count.index}-${var.name_prefix}"
-  }  
+  }
 }
 
 # dynamic list of the subnets created above
@@ -60,8 +60,30 @@ resource "aws_main_route_table_association" "public" {
 
 # and associate route table with each subnet
 resource "aws_route_table_association" "public" {
-  count          = length(var.azs)
+  count = length(var.azs)
   #subnet_id      = element([data.aws_subnet_ids.public.ids], count.index)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
+}
+
+
+###################
+# DHCP Options Set
+###################
+resource "aws_vpc_dhcp_options" "this" {
+  domain_name         = "ec2.internal"
+  domain_name_servers = ["AmazonProvidedDNS"]
+
+  tags = {
+    Name = "${var.name_prefix}-dhcp_options"
+  }
+}
+
+###############################
+# DHCP Options Set Association
+###############################
+resource "aws_vpc_dhcp_options_association" "this" {
+
+  vpc_id          = aws_vpc.vpc.id
+  dhcp_options_id = aws_vpc_dhcp_options.this.id
 }
