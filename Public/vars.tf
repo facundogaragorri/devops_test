@@ -8,14 +8,10 @@ variable "aws_profile" {
   default     = "default"
 }
 
-# dynamically retrieves all availability zones for current region
-#data "aws_availability_zones" "available" {}
-
-# specifying AZs 
-#   comment off this "azs" to retrive all AZs dynamically (uncomment the line above "data ...")
 variable "azs" {
-  type    = list
-  default = ["us-east-1a", "us-east-1b"]
+  description = "The availability zones to use for subnets and resources in the VPC. By default, all AZs in the region will be used."
+  type        = list(string)
+  default     = []
 }
 
 #Ec2 Instanes Type touse
@@ -25,7 +21,7 @@ variable "instance_type" {
 
 variable "public_subnets_cidr" {
   type    = list
-  default = ["10.0.0.0/24", "10.0.2.0/24"]
+  default = ["10.0.0.0/24", "10.0.2.0/24", "10.0.4.0/24"]  
 }
 
 variable "name_prefix" {

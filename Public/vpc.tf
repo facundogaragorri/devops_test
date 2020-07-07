@@ -1,3 +1,9 @@
+data "aws_availability_zones" "main" {}
+
+locals {
+  azs               = length(var.azs) > 0 ? var.azs : data.aws_availability_zones.main.names
+}
+
 # one vpc to hold them all, and in the cloud bind them
 resource "aws_vpc" "vpc" {
   cidr_block           = "10.0.0.0/16"
@@ -26,7 +32,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
   vpc_id                  = aws_vpc.vpc.id
   tags = {
-    Name = "Public-Subnet-${count.index}-${var.name_prefix}"
+    Name = "Public-Subnet-${count.index + 1}-${var.name_prefix}"
   }
 }
 
