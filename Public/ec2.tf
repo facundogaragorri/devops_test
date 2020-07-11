@@ -72,11 +72,9 @@ data "aws_ami" "ubuntu-16_04" {
 
 # EC2 instances, one per availability zone
 resource "aws_instance" "apache" {
-  #ami                         = lookup(var.ec2_amis, var.aws_region)
   ami                         = data.aws_ami.ubuntu-16_04.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
-  #subnet_id                   = element(tolist(data.aws_subnet_ids.public.ids), 0)
   subnet_id = aws_subnet.public[0].id
   user_data = file("install_apache.sh")
   # if an existing key_pair was not set ,use the created
@@ -94,7 +92,6 @@ resource "aws_instance" "nginx" {
   ami                         = data.aws_ami.ubuntu-16_04.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
-  #subnet_id                   = element(tolist(data.aws_subnet_ids.public.ids), 1)
   subnet_id = aws_subnet.public[1].id
   user_data = file("install_nginx.sh")
   # if an existing key_pair was not set ,use the created
