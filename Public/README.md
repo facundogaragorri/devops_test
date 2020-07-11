@@ -60,7 +60,7 @@ $ terraform destroy -var "aws_region=us-east-2" -var "aws_profile=other_profile"
 Note: we can skip the keys args in the command if they are set via `terraform.tfvars` file.
 
 ## AWS AzS
-By default will use the all azs for creating subnets in the selected region.
+By default will use the all azs available for creating subnets in the selected region.(limited to 3)
 
 ## Requirements
 

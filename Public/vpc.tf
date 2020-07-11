@@ -1,7 +1,11 @@
-data "aws_availability_zones" "main" {}
+#obtein azs available on region
+data "aws_availability_zones" "main" {
+  state = "available"
+}
 
+#limited to 3 the list of azs available on region obteined of previuos data source
 locals {
-  azs               = length(var.azs) > 0 ? var.azs : data.aws_availability_zones.main.names
+  azs               = length(var.azs) > 0 ? var.azs : (length(data.aws_availability_zones.main.names) > 3 ? slice(data.aws_availability_zones.main.names,0,3) : data.aws_availability_zones.main.names)
 }
 
 # one vpc to hold them all, and in the cloud bind them
@@ -26,8 +30,8 @@ resource "aws_internet_gateway" "public" {
 
 # create one subnet per availability zone
 resource "aws_subnet" "public" {
-  count                   = length(var.azs)
-  availability_zone       = element(var.azs, count.index)
+  count                   = length(local.azs)
+  availability_zone       = element(local.azs, count.index)
   cidr_block              = element(var.public_subnets_cidr, count.index)
   map_public_ip_on_launch = true
   vpc_id                  = aws_vpc.vpc.id
@@ -66,8 +70,7 @@ resource "aws_main_route_table_association" "public" {
 
 # and associate route table with each subnet
 resource "aws_route_table_association" "public" {
-  count = length(var.azs)
-  #subnet_id      = element([data.aws_subnet_ids.public.ids], count.index)
+  count                   = length(local.azs)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
