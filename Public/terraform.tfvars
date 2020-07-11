@@ -6,4 +6,4 @@ name_prefix = "devops-tf-test"
 
 #aws_profile = ""
 
-aws_region = "us-west-1"	
+aws_region = "us-west-1" 

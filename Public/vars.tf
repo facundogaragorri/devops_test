@@ -21,7 +21,7 @@ variable "instance_type" {
 
 variable "public_subnets_cidr" {
   type    = list
-  default = ["10.0.0.0/24", "10.0.2.0/24", "10.0.4.0/24"]  
+  default = ["10.0.0.0/24", "10.0.2.0/24", "10.0.4.0/24"]
 }
 
 variable "name_prefix" {

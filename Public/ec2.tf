@@ -77,8 +77,8 @@ resource "aws_instance" "apache" {
   associate_public_ip_address = true
   instance_type               = var.instance_type
   #subnet_id                   = element(tolist(data.aws_subnet_ids.public.ids), 0)
-  subnet_id                   = aws_subnet.public[0].id
-  user_data                   = file("install_apache.sh")
+  subnet_id = aws_subnet.public[0].id
+  user_data = file("install_apache.sh")
   # if an existing key_pair was not set ,use the created
   key_name               = var.key_name == "" ? aws_key_pair.tf-test[0].key_name : var.key_name
   vpc_security_group_ids = ["${aws_security_group.ec2-sg.id}", ]
@@ -95,8 +95,8 @@ resource "aws_instance" "nginx" {
   associate_public_ip_address = true
   instance_type               = var.instance_type
   #subnet_id                   = element(tolist(data.aws_subnet_ids.public.ids), 1)
-  subnet_id                   = aws_subnet.public[1].id
-  user_data                   = file("install_nginx.sh")
+  subnet_id = aws_subnet.public[1].id
+  user_data = file("install_nginx.sh")
   # if an existing key_pair was not set ,use the created
   key_name               = var.key_name == "" ? aws_key_pair.tf-test[0].key_name : var.key_name
   vpc_security_group_ids = ["${aws_security_group.ec2-sg.id}"]

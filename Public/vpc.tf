@@ -5,7 +5,7 @@ data "aws_availability_zones" "main" {
 
 #limited to 3 the list of azs available on region obteined of previuos data source
 locals {
-  azs               = length(var.azs) > 0 ? var.azs : (length(data.aws_availability_zones.main.names) > 3 ? slice(data.aws_availability_zones.main.names,0,3) : data.aws_availability_zones.main.names)
+  azs = length(var.azs) > 0 ? var.azs : (length(data.aws_availability_zones.main.names) > 3 ? slice(data.aws_availability_zones.main.names, 0, 3) : data.aws_availability_zones.main.names)
 }
 
 # one vpc to hold them all, and in the cloud bind them
@@ -70,7 +70,7 @@ resource "aws_main_route_table_association" "public" {
 
 # and associate route table with each subnet
 resource "aws_route_table_association" "public" {
-  count                   = length(local.azs)
+  count          = length(local.azs)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
